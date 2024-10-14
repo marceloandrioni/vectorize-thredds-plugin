@@ -1,1 +1,1 @@
-# vectorize-thredds-plugin
+# vectorize-thredds-plugin (WIP)

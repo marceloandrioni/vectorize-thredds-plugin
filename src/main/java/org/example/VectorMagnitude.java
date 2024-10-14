@@ -8,30 +8,49 @@ import ucar.nc2.dataset.VariableDS;
 import ucar.nc2.filter.Enhancement;
 import ucar.nc2.filter.EnhancementProvider;
 
+import java.io.IOException;
+
 public class VectorMagnitude extends Vectorize {
 
     public static final String ATTRIBUTE_NAME = "vectorize_mag";
 
-    public VectorMagnitude(Variable uVar, Variable vVar) {
-        super(uVar, vVar);
+    public VectorMagnitude(Variable var) {
+        super(var);
     }
 
     @Override
     public double convert(double num) {
-        return 0;
+        try {
+            // TODO: is this the best way?
+            double u_val = uVar.readScalarDouble();
+            double v_val = vVar.readScalarDouble();
+            return Math.sqrt(v_val*v_val + u_val*u_val);
+        } catch (IOException ioe) {
+            // TODO: log
+            return Double.NaN;
+        }
+    }
+
+    @Override
+    protected String getAttributeName() {
+        return ATTRIBUTE_NAME;
     }
 
 
     public class Provider implements EnhancementProvider {
 
+        public String getAttributeName() {
+            return ATTRIBUTE_NAME;
+        }
+
         @Override
         public boolean appliesTo(NetcdfDataset.Enhance enhance, AttributeContainer attributes, DataType dt) {
-            return false;
+            return dt.isNumeric();
         }
 
         @Override
         public Enhancement create(VariableDS var) {
-            return null;
+            return new VectorMagnitude(var);
         }
     }
 }
