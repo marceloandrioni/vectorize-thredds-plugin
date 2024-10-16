@@ -8,9 +8,16 @@ import ucar.nc2.dataset.VariableDS;
 import ucar.nc2.filter.Enhancement;
 import ucar.nc2.filter.EnhancementProvider;
 
-import java.io.IOException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
+
 
 public class VectorMagnitude extends Vectorize {
+
+    private static Logger logger = LogManager.getLogger(VectorMagnitude.class);
 
     public static final String ATTRIBUTE_NAME = "vectorize_mag";
 
@@ -18,16 +25,20 @@ public class VectorMagnitude extends Vectorize {
         super(var);
     }
 
+    ReentrantLock lock = new ReentrantLock();
+
     @Override
     public double convert(double num) {
+        lock.lock();
         try {
-            // TODO: is this the best way?
-            double u_val = uVar.readScalarDouble();
-            double v_val = vVar.readScalarDouble();
+            double u_val = uVar.read(indexToCoords((int)num), this.shape).getDouble(0);
+            double v_val = vVar.read(indexToCoords((int)num), this.shape).getDouble(0);
             return Math.sqrt(v_val*v_val + u_val*u_val);
-        } catch (IOException ioe) {
-            // TODO: log
+        } catch (Exception ex) {
+            logger.error(ex);
             return Double.NaN;
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -37,14 +48,15 @@ public class VectorMagnitude extends Vectorize {
     }
 
 
-    public class Provider implements EnhancementProvider {
+    public static class Provider implements EnhancementProvider {
 
+        @Override
         public String getAttributeName() {
             return ATTRIBUTE_NAME;
         }
 
         @Override
-        public boolean appliesTo(NetcdfDataset.Enhance enhance, AttributeContainer attributes, DataType dt) {
+        public boolean appliesTo(Set<NetcdfDataset.Enhance> enhance, DataType dt) {
             return dt.isNumeric();
         }
 

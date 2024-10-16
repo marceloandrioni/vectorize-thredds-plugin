@@ -1,17 +1,21 @@
 package org.example;
 
 import ucar.ma2.DataType;
-import ucar.nc2.AttributeContainer;
 import ucar.nc2.Variable;
 import ucar.nc2.dataset.NetcdfDataset;
 import ucar.nc2.dataset.VariableDS;
 import ucar.nc2.filter.Enhancement;
 import ucar.nc2.filter.EnhancementProvider;
 
-import java.io.IOException;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class VectorDirection extends Vectorize {
 
+    private static Logger logger = LogManager.getLogger(VectorDirection.class);
 
     public static final String ATTRIBUTE_NAME = "vectorize_dir";
 
@@ -19,16 +23,20 @@ public class VectorDirection extends Vectorize {
         super(var);
     }
 
+    ReentrantLock lock = new ReentrantLock();
+
     @Override
     public double convert(double num) {
+        lock.lock();
         try {
-            // TODO: is this the best way?
-            double u_val = uVar.readScalarDouble();
-            double v_val = vVar.readScalarDouble();
+            double u_val = uVar.read(indexToCoords((int)num), this.shape).getDouble(0);
+            double v_val = vVar.read(indexToCoords((int)num), this.shape).getDouble(0);
             return Math.atan2(v_val, u_val);
-        } catch (IOException ioe) {
-            // TODO: log
+        } catch (Exception ex) {
+            logger.error(ex);
             return Double.NaN;
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -37,20 +45,21 @@ public class VectorDirection extends Vectorize {
         return ATTRIBUTE_NAME;
     }
 
-    public class Provider implements EnhancementProvider {
+    public static class Provider implements EnhancementProvider {
 
-        public static String getAttributeName() {
+        @Override
+        public String getAttributeName() {
             return ATTRIBUTE_NAME;
         }
 
         @Override
-        public boolean appliesTo(NetcdfDataset.Enhance enhance, AttributeContainer attributes, DataType dt) {
-            return false;
+        public boolean appliesTo(Set<NetcdfDataset.Enhance> enhance, DataType dt) {
+            return dt.isNumeric();
         }
 
         @Override
         public Enhancement create(VariableDS var) {
-            return null;
+            return new VectorDirection(var);
         }
     }
 }
