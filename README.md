@@ -23,7 +23,7 @@ To use `Vectorize`, you will need to do the following:
 3) add an `Attribute` to your magnitude variable with `name="vectorize_mag"` and `value="{U var name}/{V var name}"
 4) add an `Attribute` to your direction variable with `name="vectorize_dir"` and `value="{U var name}/{V var name}"`.  
 
-These new variables will be read by NetCDF-Java (and the TDS) and the magnitude and directions of the provided `u` and `v` variables.
+These new variables will be read by NetCDF-Java (and the TDS) as the magnitude and directions of the provided `u` and `v` variables.
 
 #### netCDF-Java API
 If you're using netCDF-Java directly in your project, you can add the new `Variables` as follows:
@@ -60,7 +60,7 @@ If you're using the plugin in the TDS, you can add virtual variables to your dat
   ...
 </netcdf>
 ~~~
-See [here](https://docs.unidata.ucar.edu/thredds/ncml/2.2/index.html) more on using NcML.
+See [here](https://docs.unidata.ucar.edu/thredds/ncml/2.2/index.html) for more on using NcML.
 
 ### Developing and testing
 This project uses basic maven to build, test, and package.
