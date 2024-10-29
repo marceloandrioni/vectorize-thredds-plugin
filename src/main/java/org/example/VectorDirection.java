@@ -29,8 +29,8 @@ public class VectorDirection extends Vectorize {
     public double convert(double num) {
         lock.lock();
         try {
-            double u_val = uVar.read(indexToCoords((int)num), this.shape).getDouble(0);
-            double v_val = vVar.read(indexToCoords((int)num), this.shape).getDouble(0);
+            double u_val = uVar.read(indexToCoords((int)num), this.n_dimensional_array).getDouble(0);
+            double v_val = vVar.read(indexToCoords((int)num), this.n_dimensional_array).getDouble(0);
             return Math.atan2(v_val, u_val);
         } catch (Exception ex) {
             logger.error(ex);

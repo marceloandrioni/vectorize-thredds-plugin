@@ -14,6 +14,7 @@ public abstract class Vectorize implements Enhancement {
     protected Variable vVar;
     private int nDims;
     protected int[] shape;
+    protected int[] n_dimensional_array;
 
     public Vectorize(Variable var) {
         try {
@@ -23,11 +24,13 @@ public abstract class Vectorize implements Enhancement {
             this.vVar = var.getParentGroup().findVariableLocal(vars[1]);
 
             this.shape = var.getShape();
-            if (!validateDims()) { return; }
-
             this.nDims = this.shape.length;
+            if (!validateDims()) {
+                return; }
+
+            this.n_dimensional_array = new int[this.nDims];
             for (int d = 0; d < this.nDims; d++) {
-                this.shape[d] = 1;
+                this.n_dimensional_array[d] = 1;
             }
         } catch (NullPointerException ex) {
             logger.error("Could not parse attribute {}", getAttributeName());
@@ -45,7 +48,15 @@ public abstract class Vectorize implements Enhancement {
     }
 
     private boolean validateDims() {
-        return this.shape == this.uVar.getShape() && this.shape == this.vVar.getShape();
+        return checkDims(this.uVar) && checkDims(this.vVar);
+    }
+
+    private boolean checkDims(Variable var) {
+        if (this.nDims != var.getShape().length) { return false; }
+        for (int i = 0; i < this.nDims; i++) {
+            if (this.shape[i] != var.getShape()[i]) { return false; }
+        }
+        return true;
     }
 
     abstract protected String getAttributeName();
