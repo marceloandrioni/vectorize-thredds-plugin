@@ -31,7 +31,7 @@ public class TestPlugin {
     private final static float[] expectedMags =
             new float[]{ Float.NaN, Float.NaN, 1, 1, (float)Math.sqrt(2), (float)Math.sqrt(uData[5]*uData[5] + vData[5]*vData[5])};
     private final static float[] expectedDirs =
-            new float[]{ Float.NaN, Float.NaN, 90.0f, 0, 45.0f, (float)(((Math.toDegrees(Math.atan2(vData[5], uData[5])) % 360.0) + 360.0) % 360.0)};
+            new float[]{ Float.NaN, Float.NaN, 0, 90.0f, 45.0f, (float)(((Math.toDegrees(Math.atan2(uData[5], vData[5])) % 360.0) + 360.0) % 360.0)};
 
     // variable names
     private final static String uVar = "u_var";
