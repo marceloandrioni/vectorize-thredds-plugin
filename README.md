@@ -37,9 +37,9 @@ If you're using netCDF-Java directly in your project, you can add the new `Varia
 
   // add new variables with attributes
   builder.addVariable(magVar, DataType.FLOAT, "myDim")
-          .addAttribute(new Attribute(VectorMagnitude.ATTRIBUTE_NAME, "myUVarName/myVVarName/{to|from}"));
+          .addAttribute(new Attribute(VectorMagnitude.ATTRIBUTE_NAME, "myUVarName/myVVarName/to"));
   builder.addVariable(dirVar, DataType.FLOAT, "myDim")
-          .addAttribute(new Attribute(VectorDirection.ATTRIBUTE_NAME, "myUVarName/myVVarName/{to|from}"));
+          .addAttribute(new Attribute(VectorDirection.ATTRIBUTE_NAME, "myUVarName/myVVarName/to"));
 
   // write data to new vars
   NetcdfFormatWriter writer = builder.build()
