@@ -7,9 +7,9 @@ It leverages netCDF-Java's service provider mechanism for [`Enhancements`](https
 It can be used from the [THREDDS Data Server](https://docs.unidata.ucar.edu/tds/current/userguide/index.html) or directly from the [netCDF-Java library](https://docs.unidata.ucar.edu/netcdf-java/5.6/userguide/index.html).
 
 ### Deploying
-Step 1: jar the plugin with `mvn package`
-Step 2: put the jar on your netCDF-Java classpath (see [Runtime Loading](https://docs.unidata.ucar.edu/netcdf-java/5.6/userguide/runtime_loading.html)).
-Step 3: That's it, it should just work.
+ * Step 1: jar the plugin with `mvn package`
+ * Step 2: put the jar on your netCDF-Java classpath (see [Runtime Loading](https://docs.unidata.ucar.edu/netcdf-java/5.6/userguide/runtime_loading.html)). For a standard TDS instalation, this is the `/usr/local/tomcat/webapps/thredds##X.X/WEB-INF/lib/` folder.
+ * Step 3: That's it, it should just work.
 
 #### Requirements
 - netCDF-Java 5.6.1+ (or SHAPSHOT releases after 10/25/2024)
