@@ -20,8 +20,8 @@ It can be used from the [THREDDS Data Server](https://docs.unidata.ucar.edu/tds/
 To use `Vectorize`, you will need to do the following:
 1) make two new variables in your dataset in the same `Group` as your `u` and `v`: one for vector magnitude and one for vector direction
 2) give these variables the same `Dimensions` as your `u` and `v` variables (`u` and `v` must share the same `Dimension` set)
-3) add an `Attribute` to your magnitude variable with `name="vectorize_mag"` and `value="{U var name}/{V var name}/{to|from}"
-4) add an `Attribute` to your direction variable with `name="vectorize_dir"` and `value="{U var name}/{V var name}/{to|from}"`.
+3) add an `Attribute` to your magnitude variable with `name="vectorize_mag"` and `value="{U var name}/{V var name}/{to|from}"`
+4) add an `Attribute` to your direction variable with `name="vectorize_dir"` and `value="{U var name}/{V var name}/{to|from}"`
 
 The convention for the direction must be specified using "to" or "from":
 
