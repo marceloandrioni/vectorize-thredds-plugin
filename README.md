@@ -55,13 +55,13 @@ If you're using the plugin in the TDS, you can add virtual variables to your dat
 <netcdf xmlns="http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2" location="{myDatasetLocation}">
   ...
   <variable name="magnitude" shape="{ same dims as U and V }" type="float">
-    <attribute name="vectorize_mag" value="myUVarName/myVVarName/{to|from}" />
+    <attribute name="vectorize_mag" value="myUVarName/myVVarName/to" />
     <values start="0" incr="1" />
     <attribute name="long_name" value="magnitude" />
     <attribute name="units" value="m/s" />
   </variable>
   <variable name="direction" shape="{ same dims as U and V}" type="float">
-    <attribute name="vectorize_dir" value="myUVarName/myVVarName|{to|from}" />
+    <attribute name="vectorize_dir" value="myUVarName/myVVarName/to" />
     <values start="0" incr="1" />
     <attribute name="long_name" value="direction" />
     <attribute name="units" value="degrees" />
